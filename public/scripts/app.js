@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19,6 +21,7 @@ var IndecisionApp = function (_React$Component) {
     _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
     _this.handlePick = _this.handlePick.bind(_this);
     _this.handleAddOption = _this.handleAddOption.bind(_this);
+    _this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
     // default state:
     _this.state = {
       options: props.options
@@ -32,6 +35,17 @@ var IndecisionApp = function (_React$Component) {
       // manipulate the state:
       this.setState(function () {
         return { options: [] };
+      });
+    }
+  }, {
+    key: 'handleDeleteOption',
+    value: function handleDeleteOption(optionToRemove) {
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.filter(function (option) {
+            return optionToRemove !== option;
+          })
+        };
       });
     }
   }, {
@@ -66,10 +80,10 @@ var IndecisionApp = function (_React$Component) {
           hasOptions: this.state.options.length > 0,
           handlePick: this.handlePick
         }),
-        React.createElement(Options, {
+        React.createElement(Options, _defineProperty({
           options: this.state.options,
           handleDeleteOption: this.handleDeleteOptions
-        }),
+        }, 'handleDeleteOption', this.handleDeleteOption)),
         React.createElement(AddOptions, { handleAddOption: this.handleAddOption })
       );
     }
@@ -127,7 +141,11 @@ var Options = function Options(props) {
       'Remove All'
     ),
     props.options.map(function (option) {
-      return React.createElement(Option, { key: option, optionText: option });
+      return React.createElement(Option, {
+        key: option,
+        optionText: option,
+        handleDeleteOption: props.handleDeleteOption
+      });
     })
   );
 };
@@ -136,11 +154,21 @@ var Option = function Option(props) {
   return React.createElement(
     'div',
     null,
-    ' ',
-    props.optionText
+    props.optionText,
+    React.createElement(
+      'button',
+      {
+        onClick: function onClick(e) {
+          props.handleDeleteOption(props.optionText);
+        }
+      },
+      'remove'
+    ),
+    ';'
   );
 };
 
+// Option as a class component
 // class Option extends React.Component {
 //   render() {
 //     return <div> {this.props.optionText}</div>;

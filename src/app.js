@@ -4,6 +4,7 @@ class IndecisionApp extends React.Component {
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
     this.handlePick = this.handlePick.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
+    this.handleDeleteOption = this.handleDeleteOption.bind(this);
     // default state:
     this.state = {
       options: props.options,
@@ -12,6 +13,11 @@ class IndecisionApp extends React.Component {
   handleDeleteOptions() {
     // manipulate the state:
     this.setState(() => ({ options: [] }));
+  }
+  handleDeleteOption(optionToRemove) {
+    this.setState(prevState => ({
+      options: prevState.options.filter(option => optionToRemove !== option),
+    }));
   }
   handlePick() {
     const randomNum = Math.floor(Math.random() * this.state.options.length);
@@ -39,6 +45,7 @@ class IndecisionApp extends React.Component {
         <Options
           options={this.state.options}
           handleDeleteOption={this.handleDeleteOptions}
+          handleDeleteOption={this.handleDeleteOption}
         />
         <AddOptions handleAddOption={this.handleAddOption} />
       </div>
@@ -79,16 +86,33 @@ const Options = props => {
     <div>
       <button onClick={props.handleDeleteOption}>Remove All</button>
       {props.options.map(option => (
-        <Option key={option} optionText={option} />
+        <Option
+          key={option}
+          optionText={option}
+          handleDeleteOption={props.handleDeleteOption}
+        />
       ))}
     </div>
   );
 };
 
 const Option = props => {
-  return <div> {props.optionText}</div>;
+  return (
+    <div>
+      {props.optionText}
+      <button
+        onClick={e => {
+          props.handleDeleteOption(props.optionText);
+        }}
+      >
+        remove
+      </button>
+      ;
+    </div>
+  );
 };
 
+// Option as a class component
 // class Option extends React.Component {
 //   render() {
 //     return <div> {this.props.optionText}</div>;
@@ -111,7 +135,6 @@ class AddOptions extends React.Component {
 
     this.setState(() => ({ error })); // with ES6 same as error: error,
   }
-
   render() {
     return (
       <div>
