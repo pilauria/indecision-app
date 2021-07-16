@@ -1,5 +1,5 @@
 ///////////////////////////////
-// USING REACT COMPONENT STATE SYNTAX //
+// USING REACT STATE SYNTAX //
 
 class VisibilityToggle extends React.Component {
   constructor(props) {
