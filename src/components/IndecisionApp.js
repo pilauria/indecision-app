@@ -28,6 +28,7 @@ export default class IndecisionApp extends React.Component {
     }));
   };
   handleAddOption = option => {
+    // option valitation:
     if (!option) {
       return 'Enter valid value to add item';
     } else if (this.state.options.indexOf(option) > -1) {

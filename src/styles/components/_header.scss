@@ -3,17 +3,18 @@
   color: #fff;
   margin-bottom: $m-size;
   padding: $m-size 0;
+  text-align: center;
 }
 
 // BEM block element modifier
 .header__title {
-  font-size: $l-size;
+  font-size: $xl-size;
   margin: 0;
 }
 
 .header__subtitle {
   color: $off-white;
-  font-size: $m-size;
+  font-size: $l-size;
   font-weight: 500;
   margin: 0;
 }
